@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joomla, viable, mais fiable ?</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="ultra.html">Ultra</a></li>
+                    <li><a href="articles.html">Les articles</a></li>
+                </ul>
+            </nav>
+    </header>
+
+    <article>
+        <h1>Joomla, viable, mais fiable ?</h1>
+        
+        <p><strong>Note importante :</strong> Cet article est rédigé sous une clause de non-divulgation (NDA). Certaines informations sensibles, étapes spécifiques, et techniques particulières ne peuvent être mentionnées ou sont volontairement censurées pour préserver la confidentialité.</p>
+        
+        <p>Lors de mon stage chez Ultra, j'ai rapidement découvert que le site de l'entreprise était construit sur Joomla, un CMS (Content Management System) que je connaissais bien pour sa flexibilité mais aussi pour les nombreuses vulnérabilités qui lui sont associées. Pour me préparer à un éventuel pentest du site d'Ultra, j'ai décidé de recréer un environnement Joomla en local afin d'identifier les failles potentielles que je pourrais exploiter. Ce test préliminaire m'a permis de m'entraîner sur les différentes attaques possibles, et voici ce que j'ai découvert.</p>
+        
+        <h2>1. Vulnérabilités de l’installation (Setup Page)</h2>
+        <p>Lors de la création de mon site Joomla local, j'ai remarqué qu'après l'installation, la page de configuration (setup) reste accessible si elle n'est pas manuellement supprimée. Ce petit oubli est une porte d'entrée pour les attaquants. La page setup contient des informations sensibles, comme les configurations de la base de données, qui pourraient être utilisées pour une attaque ciblée. Pour tester cette vulnérabilité, j'ai laissé la page setup active et j'ai pu récupérer des informations critiques sans effort.</p>
+        <p><strong>Action :</strong> Il est impératif de supprimer ou sécuriser la page d’installation immédiatement après la configuration pour éviter tout accès non autorisé.</p>
+        
+        <h2>2. Injection SQL (SQL Injection)</h2>
+        <p>Les injections SQL sont parmi les vulnérabilités les plus dangereuses pour tout site web. Dans mon environnement Joomla, j'ai cherché à exploiter cette faille via les formulaires non sécurisés. Joomla utilise des requêtes SQL pour interagir avec la base de données, et en injectant une commande SQL malveillante dans un champ de formulaire, j'ai pu accéder à des données sensibles.</p>
+        <p>Par exemple, en insérant une commande SQL basique dans un formulaire de recherche, j'ai réussi à extraire des informations d'identification utilisateur, prouvant à quel point cette vulnérabilité peut être destructrice si elle n'est pas correctement gérée.</p>
+        <p><strong>Remède :</strong> Toujours utiliser des requêtes SQL préparées et filtrer les entrées utilisateur pour bloquer les tentatives d'injection.</p>
+        
+        <h2>3. Cross-Site Scripting (XSS)</h2>
+        <p>Le XSS est une autre menace majeure. Pour tester cette vulnérabilité, j'ai introduit un script malveillant dans un champ de commentaire sur mon site Joomla. Ce script a ensuite été exécuté par d'autres utilisateurs visitant la page, permettant potentiellement de voler leurs sessions ou de rediriger vers des sites malveillants.</p>
+        <p><strong>Test :</strong> En insérant un simple script JavaScript, j'ai pu capturer les cookies de session d'un utilisateur, démontrant la facilité avec laquelle une attaque XSS peut être menée si le CMS ne filtre pas correctement les entrées.</p>
+        
+        <h2>4. Contrôle d'accès inadéquat</h2>
+        <p>Un autre test a consisté à essayer de contourner les mécanismes de contrôle d'accès de Joomla. En manipulant les URLs et en jouant avec les permissions utilisateur, j'ai découvert que certaines parties du site, normalement restreintes, pouvaient être accessibles en exploitant des failles de configuration.</p>
+        <p><strong>Astuce :</strong> Les administrateurs doivent s'assurer que toutes les sections critiques du site sont correctement sécurisées, en révisant régulièrement les permissions et en appliquant le principe du moindre privilège.</p>
+        
+        <h2>5. Téléchargement de fichiers non sécurisés</h2>
+        <p>J'ai également exploré la possibilité de télécharger des fichiers malveillants via Joomla. Certaines extensions offrent des fonctionnalités de téléchargement sans vérification adéquate. En téléchargeant un simple script PHP déguisé en fichier image, j'ai pu exécuter du code sur le serveur, compromettant ainsi tout le site.</p>
+        <p><strong>Conclusion :</strong> Il est essentiel d'implémenter des filtres de vérification pour les fichiers téléchargés et de désactiver l'exécution de scripts dans les répertoires de téléchargement.</p>
+        
+        <h2>6. Exposition des fichiers sensibles</h2>
+        <p>Lors de mon test, j'ai découvert que le fichier de configuration de Joomla, <code>configuration.php</code>, qui contient des informations cruciales comme les identifiants de la base de données, était exposé. Sans protection adéquate, ce fichier peut être téléchargé directement depuis le navigateur.</p>
+        <p><strong>Conseil :</strong> Restreindre l'accès à ces fichiers via des règles de configuration serveur comme <code>.htaccess</code> pour Apache.</p>
+        
+        <h2>7. Extensions tierces vulnérables</h2>
+        <p>J'ai également passé en revue plusieurs extensions tierces installées sur mon site Joomla. La plupart des vulnérabilités provenaient d'extensions non mises à jour, certaines permettant même des attaques XSS ou des injections SQL en raison de pratiques de codage médiocres.</p>
+        <p><strong>Recommandation :</strong> Installer uniquement des extensions provenant de sources réputées et maintenir ces extensions à jour.</p>
+        
+        <h2>8. Faiblesse des mots de passe</h2>
+        <p>La sécurité d’un site Joomla peut être gravement compromise par des mots de passe faibles. J'ai mené un test de force brute simple sur un compte administrateur utilisant un mot de passe par défaut, et en moins d'une minute, j'ai pu accéder au tableau de bord.</p>
+        <p><strong>Remède :</strong> Toujours utiliser des mots de passe forts et uniques pour tous les comptes, en particulier ceux avec des privilèges élevés.</p>
+        
+        <h2>9. Manque de mises à jour régulières</h2>
+        <p>J'ai simulé une attaque sur un site Joomla non mis à jour. Les vulnérabilités connues sont souvent documentées publiquement, et un simple scan de version peut révéler un site vulnérable si les mises à jour de sécurité ne sont pas appliquées.</p>
+        <p><strong>Conclusion :</strong> Maintenir Joomla et toutes ses extensions à jour est essentiel pour protéger le site contre les exploits connus.</p>
+        
+        <h2>10. Attaques par Déni de Service (DoS)</h2>
+        <p>Enfin, j'ai testé la robustesse de Joomla contre les attaques par déni de service. Bien que le CMS lui-même ne soit pas directement vulnérable, une mauvaise configuration du serveur peut rendre un site Joomla très susceptible à une surcharge de requêtes.</p>
+        <p><strong>Remarque :</strong> Configurer des protections contre les DoS, comme les limites de connexions et l'utilisation d'un WAF (Web Application Firewall), est crucial pour prévenir ce type d'attaque.</p>
+        
+        <h2>Conclusion</h2>
+        <p>Ma préparation à un pentest sur le site d'Ultra m'a permis d'explorer en profondeur les vulnérabilités de Joomla. Ces tests m'ont non seulement aidé à mieux comprendre les failles potentielles du site, mais m'ont également fourni des idées concrètes pour améliorer la sécurité des systèmes Joomla. Chaque vulnérabilité abordée ici doit être prise au sérieux, car dans le contexte d'un site en production, la moindre faille peut être exploitée pour causer des dégâts considérables.</p>
+        <p>Pour les administrateurs de sites Joomla, suivre les meilleures pratiques de sécurité est impératif : supprimer ou protéger les pages d’installation, utiliser des mots de passe forts, maintenir Joomla et ses extensions à jour, et configurer correctement les permissions de fichiers. Une vigilance constante et une mise à jour régulière des systèmes sont les meilleures armes contre les menaces actuelles.</p>
+    </article>
+    
+    <footer>
+        <p>&copy; 2024 TonNom. Tous droits réservés.</p>
+    </footer>
+
+</body>
+</html>

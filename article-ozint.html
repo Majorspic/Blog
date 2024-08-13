@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ozint : les plus grosses failles sont toujours humaines</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="ultra.html">Ultra</a></li>
+                    <li><a href="articles.html">Les articles</a></li>
+                </ul>
+            </nav>
+            <h1>Ozint : les plus grosses failles sont toujours humaines</h1>
+        </header>
+
+        <section class="article-content">
+            <div class="nda-warning">
+                <p><strong>Note importante :</strong> Cet article est rédigé sous une clause de non-divulgation (NDA). Certaines informations sensibles, étapes spécifiques, et techniques particulières ne peuvent être mentionnées ou sont volontairement censurées pour préserver la confidentialité.</p>
+            </div>
+
+            <p>En explorant le site d'<a href="https://ultra.io" target="_blank">Ultra</a>, une idée m'est venue. J'avais souvent entendu dire par des collègues plus expérimentés que l'OSINT (Open Source Intelligence) était un excellent moyen de retrouver des informations sur les employés d'une entreprise. Quelle ne fut pas ma surprise de découvrir que leur site comportait un onglet entièrement dédié à la promotion du personnel.</p>
+            
+            <div class="screenshot">
+                <img src="screen1.png" alt="Promotion du personnel sur le site d'Ultra">
+            </div>
+
+            <p>Il y avait même un lien pour accéder directement au compte LinkedIn de chaque membre du personnel. Prenons l'exemple de David Hanson, le premier profil listé. Nous allons effectuer quelques recherches sur lui. En utilisant un site spécialisé, j'ai utilisé son lien LinkedIn pour obtenir des informations personnelles, et voici ce que j'ai trouvé :</p>
+
+            <div class="screenshot">
+                <img src="screen2.png" alt="Informations LinkedIn de David Hanson">
+            </div>
+
+            <p>Ici, on peut voir qu'il possède deux adresses e-mail professionnelles avec les noms de domaine ultra.io et ultra.com. Cependant, une ancienne adresse e-mail apparaît également, probablement issue d'une période antérieure de sa carrière. Cette découverte pourrait potentiellement révéler des mots de passe qu'il utilise depuis longtemps, ainsi que des informations personnelles exploitables à des fins malveillantes, telles que des tentatives de phishing.</p>
+
+            <p>Poursuivons notre analyse avec l'outil <a href="https://haveibeenpwned.com/" target="_blank">Have I Been Pwned</a>. Après avoir entré son adresse e-mail, voici ce que nous obtenons :</p>
+
+            <div class="screenshot">
+                <img src="screen3.png" alt="Résultats Have I Been Pwned">
+            </div>
+
+            <p>Il est assez courant qu'une adresse e-mail et des mots de passe soient compromis, mais 35 violations de données, c'est énorme. Nous allons examiner ces brèches plus en détail, en se concentrant sur celles qui contiennent beaucoup d'informations personnelles, en particulier les mots de passe et les adresses. Les sites les plus connus sont ceux où les brèches sont les plus susceptibles de révéler des informations cruciales.</p>
+
+            <div class="screenshot">
+                <img src="screen4.png" alt="Détails des brèches 1">
+                <img src="screen5.png" alt="Détails des brèches 2">
+                <img src="screen6.png" alt="Détails des brèches 3">
+                <img src="screen7.png" alt="Détails des brèches 4">
+                <img src="screen8.png" alt="Détails des brèches 5">
+                <img src="screen9.png" alt="Détails des brèches 6">
+                <img src="screen10.png" alt="Détails des brèches 7">
+                <img src="screen11.png" alt="Détails des brèches 8">
+            </div>
+
+            <p>Après une exploration approfondie du Dark Web, j'ai découvert un site russe peu fréquentable contenant un fichier texte avec plusieurs noms d'utilisateur et mots de passe provenant de bases de données compromises. Ce fichier fait 154 millions de caractères.</p>
+
+            <div class="screenshot">
+                <img src="screen12.png" alt="Fichier texte de données compromises">
+            </div>
+
+            <p>Et là, surprise :</p>
+
+            <div class="screenshot">
+                <img src="screen13.png" alt="Surprise trouvée dans le fichier texte">
+            </div>
+
+            <p>La première chose qui me vient à l'esprit est d'essayer de me connecter à son compte Gmail.</p>
+
+            <div class="screenshot">
+                <img src="screen14.png" alt="Tentative de connexion Gmail">
+            </div>
+
+            <p>Malheureusement, cela ne fonctionne pas. Nous avons alors tenté d'accéder à ses réseaux sociaux.</p>
+
+            <div class="screenshot">
+                <img src="screen15.png" alt="Tentative de connexion réseaux sociaux 1">
+                <img src="screen16.png" alt="Tentative de connexion réseaux sociaux 2">
+                <img src="screen17.png" alt="Tentative de connexion réseaux sociaux 3">
+                <img src="screen18.png" alt="Tentative de connexion réseaux sociaux 4">
+                <img src="screen19.png" alt="Tentative de connexion réseaux sociaux 5">
+                <img src="screen20.png" alt="Tentative de connexion réseaux sociaux 6">
+                <img src="screen21.png" alt="Tentative de connexion réseaux sociaux 7">
+            </div>
+
+            <p>Malheureusement, toutes ces tentatives se sont soldées par un échec dû à des 2FA ou bien encore à des changements de mots de passe. L'occasion, encore une fois, de rappeler à quel point l'activation de la 2FA et le changement régulier de mots de passe sont des mesures indispensables pour éviter toute tentative de hacking à votre encontre. Malgré l'échec de ces tentatives, la prudence est de mise. Ce type d'investigation montre que les plus grandes failles de sécurité proviennent souvent de comportements humains et de la négligence des utilisateurs.</p>
+        </section>
+    </div>
+</body>
+</html>
